@@ -3,7 +3,7 @@
 | Phase | Status | Notes |
 |---|---|---|
 | P0 Research and decisions | **done** (2026-10-12) | R-001 to R-007, R-012, R-013; ADR 0001 accepted; BASELINE 0.2 applied |
-| P1 Skeleton | **done locally** (2026-10-12) | `make check` green; CI not yet run (repo not pushed); `.env.example` still to add (write blocked by local permission rule) |
+| P1 Skeleton | **done** (2026-10-12) | `make check` green; CI runs on first push to `main` |
 | P2 Kernel | not started | |
 | P3 Security core | not started | needs R-008 to R-011, R-022 |
 | P4 Data | not started | needs R-014, R-015 |
