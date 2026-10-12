@@ -134,14 +134,14 @@ func TestGuardsInEveryEnv(t *testing.T) {
 }
 
 func TestDevelopmentDefaults(t *testing.T) {
-	cfg, err := Load(lookup(map[string]string{"APP_ENV": "development", "TRUSTED_PROXIES": " 10.0.0.1 , 172.16.0.0/12 "}))
+	cfg, err := Load(lookup(map[string]string{"APP_ENV": "development", "TRUSTED_PROXIES": " 10.0.0.1 , 172.16.0.0/12 , 2001:DB8:0::1, ::ffff:10.0.0.2, 10.1.2.3/8"}))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if cfg.Addr != ":8080" || !cfg.CookieSecure || cfg.HSTSMaxAge != 63072000 || cfg.BaseURL.String() != "http://localhost:8080" {
 		t.Fatalf("unexpected defaults: %+v", cfg)
 	}
-	if got := strings.Join(cfg.TrustedProxies, ","); got != "10.0.0.1,172.16.0.0/12" {
+	if got := strings.Join(cfg.TrustedProxies, ","); got != "10.0.0.1,172.16.0.0/12,2001:db8::1,10.0.0.2,10.0.0.0/8" {
 		t.Fatalf("proxies = %q", got)
 	}
 }

@@ -113,11 +113,12 @@ func Load(lookup func(string) (string, bool)) (Config, error) {
 		if p = strings.TrimSpace(p); p == "" {
 			continue
 		}
-		if err := checkProxy(p); err != nil {
-			errs = append(errs, fmt.Errorf("TRUSTED_PROXIES: entry %d: %w", len(c.TrustedProxies)+1, err))
+		canon, err := canonicalProxy(p)
+		if err != nil {
+			errs = append(errs, fmt.Errorf("TRUSTED_PROXIES: entry %q: %w", p, err))
 			continue
 		}
-		c.TrustedProxies = append(c.TrustedProxies, p)
+		c.TrustedProxies = append(c.TrustedProxies, canon)
 	}
 
 	if (c.TLSCertFile == "") != (c.TLSKeyFile == "") {
@@ -128,23 +129,27 @@ func Load(lookup func(string) (string, bool)) (Config, error) {
 	return c, errors.Join(errs...)
 }
 
-// checkProxy accepts a single IP or a CIDR. Fiber silently drops entries it
-// cannot parse, so we fail boot instead. A zero-length prefix trusts everyone.
-func checkProxy(p string) error {
+// canonicalProxy accepts a single IP or a CIDR and returns its canonical form.
+// Fiber silently drops entries it cannot parse, so we fail boot instead.
+// Fiber matches single IPs by exact string against the peer's canonical
+// address, so "2001:DB8::1" or "::ffff:10.0.0.1" would never match.
+// A zero-length prefix trusts everyone.
+func canonicalProxy(p string) (string, error) {
 	if strings.Contains(p, "/") {
 		pfx, err := netip.ParsePrefix(p)
 		if err != nil {
-			return errors.New("not a valid CIDR")
+			return "", errors.New("not a valid CIDR")
 		}
 		if pfx.Bits() == 0 {
-			return errors.New("must not trust every address (/0)")
+			return "", errors.New("must not trust every address (/0)")
 		}
-		return nil
+		return pfx.Masked().String(), nil
 	}
-	if _, err := netip.ParseAddr(p); err != nil {
-		return errors.New("not a valid IP or CIDR")
+	addr, err := netip.ParseAddr(p)
+	if err != nil || addr.Zone() != "" {
+		return "", errors.New("not a valid IP or CIDR")
 	}
-	return nil
+	return addr.Unmap().String(), nil
 }
 
 // validate holds the production-only guards (BASELINE §6.13).

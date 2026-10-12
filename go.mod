@@ -2,7 +2,10 @@ module github.com/ahsanmubariz/bolerplet
 
 go 1.27.2
 
-require github.com/gofiber/fiber/v3 v3.5.0
+require (
+	github.com/gofiber/fiber/v3 v3.5.0
+	github.com/valyala/fasthttp v1.73.0
+)
 
 require (
 	github.com/BurntSushi/toml v1.4.1-0.20240526193622-a339e1f7089c // indirect
@@ -23,7 +26,6 @@ require (
 	github.com/philhofer/fwd v1.2.0 // indirect
 	github.com/tinylib/msgp v1.6.4 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.73.0 // indirect
 	golang.org/x/crypto v0.57.0 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20231108232855-2478ac86f678 // indirect
 	golang.org/x/mod v0.41.0 // indirect
