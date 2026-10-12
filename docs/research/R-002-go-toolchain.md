@@ -32,3 +32,12 @@
   - BASELINE §1 wording "`go` + `toolchain` lines in go.mod" should become "`go 1.27.1` line in go.mod (a `toolchain` line only when it differs from `go`)".
 - Proven by test: `go mod tidy` experiment (above), plus govulncheck in `spikes/a` (see R-001). Permanent: `make vuln` in CI.
 - Re-check trigger: each Go point release (go.dev/doc/devel/release, golang-announce), any stdlib GO-ID in the weekly govulncheck run, or adopting a dependency with a higher `go` minimum.
+
+## Addendum 2026-10-12: go1.27.2 security release
+- Trigger: `make vuln` in P1 (govulncheck v1.8.0) reported 8 **reachable** vulnerabilities on go1.27.1, all called via `fiber.App.Listen` / `fiber.init`:
+  - GO-2026-6603, GO-2026-6610, GO-2026-6611, GO-2026-6617: `net/http/internal/http2` (also in `golang.org/x/net` ≤ v0.59.0)
+  - GO-2026-6605, GO-2026-6613: `net/http`
+  - GO-2026-6607: `crypto/tls`
+  - GO-2026-6608: `net/textproto`
+- All are fixed in **go1.27.2** (released 2026-10-08; go.dev/dl lists `go1.27.2` and `go1.26.9` as stable) and **`golang.org/x/net` v0.60.0** (2026-10-08).
+- Decision: `go 1.27.2` in go.mod and `golang.org/x/net v0.60.0` (indirect, pinned through MVS). This takes the ADR 0001 security exception to the 14-day soak. After the change, govulncheck reports 0 symbol- and package-level findings; only the known module-level GO-2026-5932 (openpgp, R-001) remains.

@@ -24,7 +24,7 @@ SPA frontend, GraphQL, multi-tenancy, acting as an OAuth/OIDC provider, WebSocke
 
 | Component | Choice | Pin rule | Reason |
 |---|---|---|---|
-| Language | Go, latest stable ≥ 1.25 | `go 1.27.1` line in go.mod (a `toolchain` line only when it differs from `go`); CI sets `GOTOOLCHAIN=local` | Fiber v3 requires ≥ 1.25; `os.Root` |
+| Language | Go, latest stable ≥ 1.25 | `go 1.27.x` line (current patch, ADR 0001) in go.mod (a `toolchain` line only when it differs from `go`); CI sets `GOTOOLCHAIN=local` | Fiber v3 requires ≥ 1.25; `os.Root` |
 | HTTP | `github.com/gofiber/fiber/v3` | exact version, **≥ v3.5.0** | earlier versions carry known advisories (RESEARCH §6) |
 | Views | `github.com/a-h/templ` | lib and CLI at the same exact version | compile-time templates, contextual escaping |
 | Database | PostgreSQL 16+ | — | |

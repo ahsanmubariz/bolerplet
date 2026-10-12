@@ -10,7 +10,7 @@
 
     | Module | Version | Released | Source note |
     |---|---|---|---|
-    | `go` directive | `go 1.27.1` (no `toolchain` line) | 2026-09-01 | R-002 |
+    | `go` directive | `go 1.27.2` (no `toolchain` line) | 2026-10-08 | R-002 addendum (security release; soak exception) |
     | `github.com/gofiber/fiber/v3` | v3.5.0 | 2026-08-13 | R-001, R-003 to R-007 |
     | `github.com/a-h/templ` | v0.3.1020 | 2026-05-10 | R-012 (v0.3.1070 of 2026-10-04 is in soak; no security content) |
     | `github.com/jackc/pgx/v5` | v5.11.0 | 2026-09-07 | OSV: all pgx advisories fixed ≤ 5.9.2; API verified in R-014 (P4) |
@@ -19,6 +19,8 @@
     | `golang.org/x/crypto` | v0.57.0 | — | R-001 (lifts fiber's v0.54.0 past GO-2026-6303/6354/6355); v0.58.0 (2026-10-09) is in soak |
     | `github.com/microcosm-cc/bluemonday` | v1.0.27 | 2024-07-04 | OSV: all advisories fixed ≤ 1.0.16 |
     | `github.com/gofiber/storage/postgres/v3` | v3.7.1 | 2026-09-22 | R-006 |
+
+    Transitive `golang.org/x/net` is lifted to v0.60.0 (2026-10-08) for the http2 fixes of the same release (soak exception, R-002 addendum).
 
     Transitive `github.com/valyala/fasthttp` stays at fiber's v1.73.0. Overriding to v1.75.0 is a separate ADR after its soak (R-001 option (c)).
   - **Tools:**
